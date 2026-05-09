@@ -1,0 +1,86 @@
+name: Corpus Monitor CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Syntax + Schema Validation
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Syntax check — app
+        run: python -m py_compile app/shrf_corpus_monitor_app.py && echo "✓ app syntax OK"
+
+      - name: Syntax check — fetch tool
+        run: python -m py_compile tools/fetch_zenodo_metrics.py && echo "✓ fetch tool syntax OK"
+
+      - name: Syntax check — validator
+        run: python -m py_compile tools/validate_corpus.py && echo "✓ validator syntax OK"
+
+      - name: AST check — app
+        run: |
+          python3 -c "
+          import ast
+          src = open('app/shrf_corpus_monitor_app.py').read()
+          ast.parse(src)
+          print(f'✓ AST clean — {len(src.splitlines())} lines')
+          "
+
+      - name: Corpus schema validation
+        run: |
+          python3 tools/validate_corpus.py data/corpus.json
+        continue-on-error: false
+
+      - name: JSON structure check — metrics
+        run: |
+          python3 -c "
+          import json
+          data = json.load(open('data/uptake-metrics-full.json'))
+          entries = data.get('entries', [])
+          print(f'✓ metrics JSON valid — {len(entries)} entries')
+          assert len(entries) > 0, 'No entries found'
+          required = ['doi','title','domain','status','views','downloads','retrieved']
+          for e in entries[:5]:
+              for f in required:
+                  assert f in e, f'Missing field {f} in entry {e.get(\"doi\",\"?\")}' 
+          print('✓ Required fields present in sample')
+          "
+
+      - name: JSON structure check — resolution register
+        run: |
+          python3 -c "
+          import json
+          data = json.load(open('data/resolution-register.json'))
+          items = data.get('items', [])
+          print(f'✓ resolution register valid — {len(items)} items')
+          "
+
+      - name: Invariant check — doctrine rail present in app
+        run: |
+          python3 -c "
+          src = open('app/shrf_corpus_monitor_app.py').read()
+          invariants = [
+              'audience behaviour',
+              'corpus truth',
+              'projection layer',
+              'Unlabelled unclear',
+          ]
+          for inv in invariants:
+              assert inv.lower() in src.lower(), f'INVARIANT MISSING: {inv}'
+              print(f'✓ Invariant present: {inv}')
+          "

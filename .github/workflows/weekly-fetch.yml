@@ -1,0 +1,76 @@
+name: Weekly Metrics Fetch
+
+on:
+  schedule:
+    # Every Monday at 08:00 UTC
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+    # Allow manual trigger from GitHub Actions UI
+    inputs:
+      only_preferred:
+        description: 'Skip superseded versions'
+        required: false
+        default: 'true'
+        type: boolean
+
+jobs:
+  fetch-metrics:
+    runs-on: ubuntu-latest
+    name: Fetch Zenodo Metrics
+
+    # NOTE: This workflow requires no secrets — Zenodo public API is open.
+    # It commits the updated metrics file back to the repo.
+    # Review the commit before merging if running on a protected branch.
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4 lxml
+
+      - name: Run fetch
+        run: |
+          cd $GITHUB_WORKSPACE
+          if [ "${{ github.event.inputs.only_preferred }}" = "true" ] || [ "${{ github.event_name }}" = "schedule" ]; then
+            python3 tools/fetch_zenodo_metrics.py \
+              --input data/uptake-metrics-full.json \
+              --output data/uptake-metrics-full.json \
+              --only-preferred \
+              --summary \
+              --delay 0.5 \
+              --workers 2
+          else
+            python3 tools/fetch_zenodo_metrics.py \
+              --input data/uptake-metrics-full.json \
+              --output data/uptake-metrics-full.json \
+              --summary \
+              --delay 0.5 \
+              --workers 2
+          fi
+
+      - name: Commit updated metrics
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "SHRF Metrics Bot"
+          git add data/uptake-metrics-full.json
+          git diff --staged --quiet || git commit -m "chore: weekly Zenodo metrics update $(date +%Y-%m-%d)"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.8.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+        continue-on-error: true
+
+    # IMPORTANT INVARIANT:
+    # This workflow updates the metrics layer only.
+    # It never touches corpus.json, schema.json, or any provenance state.
+    # Uptake = audience behaviour. Corpus truth is separate and manually maintained.

@@ -1,0 +1,166 @@
+{
+  "_meta": {
+    "schema": "shrf-resolution-register-v1",
+    "version": "0.1-template",
+    "created": "2026-05-09",
+    "last_updated": "2026-05-09",
+    "invariant": "Unresolved is a valid state, not a weakness. Auto-complete metadata only; never auto-complete evidence.",
+    "doctrine": {
+      "auto_completable": [
+        "missing DOI metrics (fetch from Zenodo)",
+        "duplicate DOI detection",
+        "superseded/preferred-cite chain mapping",
+        "missing metadata fields",
+        "stale retrieval flags",
+        "failed fetch retries",
+        "format/schema validation gaps",
+        "next-action queue ordering"
+      ],
+      "never_auto_completable": [
+        "empirical validation results",
+        "benchmark scores without data",
+        "scientific conclusions",
+        "external peer review status",
+        "inaccessible dataset claims",
+        "observational confirmation of predictions",
+        "falsifier state changes"
+      ]
+    }
+  },
+
+  "status_definitions": {
+    "RESOLVED":                  "All required inputs obtained; item closed.",
+    "UNRESOLVED_DATA_ACCESS":    "Blocked by unavailable dataset, API, or file.",
+    "UNRESOLVED_METHOD":         "Analytical method not yet run or implemented.",
+    "UNRESOLVED_VALIDATION":     "Schema/gate/TRIDENT validation not yet passed.",
+    "UNRESOLVED_EXTERNAL_REVIEW":"Awaiting external reviewer, collaborator, or institution.",
+    "BACKBURNER":                "Deferred; not blocked, but not active. Revisit on trigger.",
+    "AUTO_FIXABLE":              "Can be resolved by running a script or fetch — no human judgment required.",
+    "MANUAL_INPUT_REQUIRED":     "Requires human decision, data entry, or external action."
+  },
+
+  "items": [
+    {
+      "id": "RES-001",
+      "doi": "10.5281/zenodo.18899474",
+      "title": "BASELINE-12 corpus index — Toroidal-Fermi branch not yet inserted",
+      "status": "MANUAL_INPUT_REQUIRED",
+      "blocked_by": "User confirmation required before committing Toroidal-Fermi Notes 1-3 to Baseline-12",
+      "needed_input": "Explicit confirmation from Neil to stage insertion",
+      "next_action": "Confirm insertion of B12-STAGE-1 block (see pending-updates.md)",
+      "auto_resolvable": false,
+      "confidence": "HIGH",
+      "evidence_required": "User confirmation only — DOIs are canonical",
+      "closure_condition": "Neil confirms B12-STAGE-1 committed",
+      "last_checked": "2026-05-09",
+      "notes": "Toroidal-Fermi Notes 1-3 are CANONICAL. Staged block is prepared. Awaiting go-ahead."
+    },
+    {
+      "id": "RES-002",
+      "doi": "10.5281/zenodo.18906997",
+      "title": "TF Note 3 v2 — Related Works audit: v1 DOI references not yet checked",
+      "status": "UNRESOLVED_VALIDATION",
+      "blocked_by": "Related Works audit not yet run across full corpus",
+      "needed_input": "Manual check of all corpus notes citing zenodo.18906881 (v1) to confirm preferred-cite is zenodo.18906997 (v2)",
+      "next_action": "Run Related Works audit across published Zenodo records",
+      "auto_resolvable": false,
+      "confidence": "PARTIAL",
+      "evidence_required": "Zenodo Related Works metadata from each citing record",
+      "closure_condition": "All Related Works entries confirmed using v2 DOI",
+      "last_checked": "2026-05-09",
+      "notes": "Separate task from branch-state logic per corpus skill rules."
+    },
+    {
+      "id": "RES-003",
+      "doi": "10.5281/zenodo.19195810",
+      "title": "AI Metadata Safety V2 — Related Works audit: v1 DOI references not yet checked",
+      "status": "UNRESOLVED_VALIDATION",
+      "blocked_by": "Related Works audit not yet run",
+      "needed_input": "Check all corpus notes citing zenodo.18300170 (v1) to confirm preferred cite is zenodo.19195810 (v2)",
+      "next_action": "Run Related Works audit for this title correction",
+      "auto_resolvable": false,
+      "confidence": "PARTIAL",
+      "evidence_required": "Zenodo Related Works metadata per citing record",
+      "closure_condition": "All Related Works entries confirmed using v2 DOI",
+      "last_checked": "2026-05-09",
+      "notes": "Part of the same Related Works audit as RES-002."
+    },
+    {
+      "id": "RES-004",
+      "doi": "ALL_176",
+      "title": "Zenodo uptake metrics — first fetch not yet run",
+      "status": "AUTO_FIXABLE",
+      "blocked_by": "fetch_zenodo_metrics.py not yet run locally",
+      "needed_input": "Run: pip install requests beautifulsoup4 lxml && python3 fetch_zenodo_metrics.py --only-preferred --summary",
+      "next_action": "Run fetch script locally; load output into dashboard",
+      "auto_resolvable": true,
+      "auto_action": "fetch_zenodo_metrics.py --only-preferred --summary",
+      "confidence": "HIGH",
+      "evidence_required": "None — Zenodo public API / HTML scrape",
+      "closure_condition": "uptake-metrics-full.json has retrieved=true for all 164 preferred/current records",
+      "last_checked": "2026-05-09",
+      "notes": "All 176 entries zeroed. First fetch gives baseline for delta tracking."
+    },
+    {
+      "id": "RES-005",
+      "doi": "10.5281/zenodo.19155025",
+      "title": "Spectral Geometry Synthesis — Baseline-12 classification pending",
+      "status": "MANUAL_INPUT_REQUIRED",
+      "blocked_by": "Index placement decision not yet made",
+      "needed_input": "Neil's decision: domain assignment, branch linkage, Baseline-12 node number",
+      "next_action": "Classify and assign Baseline-12 position (see pending-updates.md W-01)",
+      "auto_resolvable": false,
+      "confidence": "HIGH",
+      "evidence_required": "User decision only — DOI is canonical",
+      "closure_condition": "Placement confirmed and committed to Baseline-12",
+      "last_checked": "2026-05-09",
+      "notes": "WATCHLIST item in pending-updates.md. D3 discriminator published."
+    },
+    {
+      "id": "RES-006",
+      "doi": "10.5281/zenodo.19177336",
+      "title": "Comb Jelly ECO-BIO-PROP-001 — Baseline-12 classification pending",
+      "status": "MANUAL_INPUT_REQUIRED",
+      "blocked_by": "Index placement decision not yet made",
+      "needed_input": "Neil's decision: Baseline-12 position and branch classification",
+      "next_action": "Classify and assign Baseline-12 position (see pending-updates.md W-02)",
+      "auto_resolvable": false,
+      "confidence": "HIGH",
+      "evidence_required": "User decision only — DOI is canonical",
+      "closure_condition": "Classification confirmed and committed",
+      "last_checked": "2026-05-09",
+      "notes": "SHRF-ADJACENT, TRIDENT CONDITIONAL PASS. Dual open gaps: neural propagation imaging; ctene phase mapping."
+    },
+    {
+      "id": "RES-007",
+      "doi": "10.5281/zenodo.18906111",
+      "title": "Toroidal-Fermi FRB test — primary observational gap open",
+      "status": "UNRESOLVED_DATA_ACCESS",
+      "blocked_by": "No FRB multi-frequency coherence dataset with sufficient frequency coverage (10-15 GHz) identified",
+      "needed_input": "FRB survey data covering 10-15 GHz with multi-frequency coherence statistics",
+      "next_action": "Monitor CHIME/FRB high-frequency extensions, DSA-2000 commissioning, uGMRT high-band surveys",
+      "auto_resolvable": false,
+      "confidence": "PARTIAL",
+      "evidence_required": "Multi-frequency FRB coherence statistics in 10-15 GHz window after ISM/source subtraction",
+      "closure_condition": "Dataset identified; residual ν^(-6/5) test run",
+      "last_checked": "2026-05-09",
+      "notes": "Falsifiers F-TF-1 through F-TF-3 all OPEN. Theory layer frozen — this is observational monitoring only."
+    },
+    {
+      "id": "RES-008",
+      "doi": "CORPUS_ALL",
+      "title": "Corpus schema validator — version_of DOIs not in corpus flagged as warnings",
+      "status": "AUTO_FIXABLE",
+      "blocked_by": "v1 DOIs (superseded versions) not added as corpus nodes",
+      "needed_input": "Decision: add superseded v1 DOIs as corpus nodes with status=superseded, or accept warnings",
+      "next_action": "Either add superseded nodes to corpus.json or confirm warnings are acceptable",
+      "auto_resolvable": true,
+      "auto_action": "Add superseded DOIs as minimal nodes to corpus.json with status=superseded",
+      "confidence": "HIGH",
+      "evidence_required": "None — DOIs known",
+      "closure_condition": "Validator runs with 0 warnings, or warnings explicitly accepted",
+      "last_checked": "2026-05-09",
+      "notes": "Current: 2 warnings on TF Note 3 v1 and AI Metadata v1. These are correct — v1s exist but are not corpus nodes."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+
+# Secrets and credentials
+.env
+*.key
+*.pem
+secrets.toml
+.streamlit/secrets.toml
+
+# Runtime outputs — not versioned, generated locally
+metrics_snapshots/
+fetch_errors.log
+fetch.log
+*.log
+
+# Large data files — version-controlled separately or via Zenodo
+# uptake-metrics-full.json is included as template (zeroed)
+# Do not commit fetched metrics with real data here
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp

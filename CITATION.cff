@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "SHRF Corpus Monitor"
+version: 0.7.0
+date-released: "2026-05-09"
+abstract: >
+  A local monitoring and analysis application for the SHRF (Sympathetic Harmonic
+  Resonance Framework) research corpus. Provides corpus validation, Zenodo uptake
+  metrics tracking, provenance topology, resolution register, and export tools.
+  Maintains strict separation between corpus provenance truth, audience behaviour
+  metrics, and visual projection layers.
+authors:
+  - family-names: Tuckwell
+    given-names: Neil Clive
+    orcid: ""
+    email: TuckTuckwell@gmail.com
+repository-code: "https://github.com/NeilTuckwell/SHRF-Corpus-Monitor"
+license: CC-BY-4.0
+keywords:
+  - research corpus management
+  - provenance tracking
+  - Zenodo metrics
+  - SHRF
+  - TRIDENT
+  - USDOP
+  - corpus monitor
+  - Streamlit
+references:
+  - type: article
+    title: "SHRF / TRIDENT Corpus Structure Map — BASELINE-12"
+    authors:
+      - family-names: Tuckwell
+        given-names: Neil Clive
+    doi: "10.5281/zenodo.18899474"
+  - type: software
+    title: "USDOP v1.2"
+    doi: "10.5281/zenodo.18721255"
+  - type: software
+    title: "SHRF v2"
+    doi: "10.5281/zenodo.18761638"
