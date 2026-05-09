@@ -512,12 +512,12 @@ with st.sidebar:
 
     up_metrics = st.file_uploader("metrics JSON", type="json", key="up_metrics",
                                    label_visibility="collapsed")
-    if up_metrics:
+    if up_metrics is not None:
         try:
             data = json.load(up_metrics)
             st.session_state.metrics = data
             n = len(data.get("entries",[]))
-            st.success(f"✓ metrics: {n} entries")
+            st.success(f"✓ metrics: {n} entries")`n            st.rerun()
         except Exception as e:
             st.error(str(e))
 
@@ -1675,3 +1675,4 @@ with tabs[6]:
                 file_name=f"resolution-{date.today().isoformat()}.csv",
                 mime="text/csv"
             )
+
